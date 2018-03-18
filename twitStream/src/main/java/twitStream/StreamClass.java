@@ -22,6 +22,10 @@ public class StreamClass {
 
 		final Properties kafka_prop = new Properties();
 
+		/*
+		 * Setup Kafka Properties
+		 */
+		
 		kafka_prop.put("bootstrap.servers", "localhost:9092");
 		kafka_prop.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 		kafka_prop.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
