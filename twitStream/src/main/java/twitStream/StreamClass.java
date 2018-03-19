@@ -12,7 +12,7 @@ import twitter4j.conf.ConfigurationBuilder;
 public class StreamClass {
 
 	static int count_1 = 0;
-	static String topic = "Trump";
+	static String topic = "testTopic";
 	static String api_key = "1aVnzdKSrxPwTHSO3htci7wjj";
 	static String api_secret = "poYuvtU8IlR0ikkAbK7RFot85mewj0aSjjkuA9iHvAvB7Wwe22";
 	static String access_token = "276338263-bKICrggnBa3hTVUPgzQtcQpyzMK8cbxJg1vPm4Zv";
@@ -22,7 +22,7 @@ public class StreamClass {
 
 		final Properties kafka_prop = new Properties();
 		
-		kafka_prop.put("bootstrap.servers", "localhost:9092");
+		kafka_prop.put("bootstrap.servers", "35.171.25.29:9092");
 		kafka_prop.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 		kafka_prop.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 		kafka_prop.put("group.id", "twitGroup");
@@ -44,11 +44,11 @@ public class StreamClass {
 			}
 
 			public void onStatus(Status status) {
-
-				streamTweet(status, producer, topic);
+				
+				streamTweet(status, producer, topic, count_1);
 				count_1++;
 				if (count_1 % 10 == 0 && count_1 > 1) {
-					//System.out.println("Trump # " + count_1);
+					System.out.println("Trump # " + count_1);
 				}
 			}
 
@@ -66,15 +66,15 @@ public class StreamClass {
 		};
 
 		twitterStream.addListener(listener);
-
+		
 		String[] track_terms = { "Trump" };
 		twitterStream.filter(track_terms);
 
 	}
 
-	public static void streamTweet(Status status, KafkaProducer<String, String> producer, String topic) {
-
-		producer.send(new ProducerRecord<String, String>(topic, "topic", status.getText()));
+	public static void streamTweet(Status status, KafkaProducer<String, String> producer, String topic, int count_1) {
+		
+		producer.send(new ProducerRecord<String, String>(topic, "topic"+String.valueOf(count_1), status.getText()));
 		
 	}
 }
